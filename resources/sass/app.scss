@@ -1,0 +1,58 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+// fontawesome
+@import "~@fortawesome/fontawesome-free/scss/fontawesome";
+@import "~@fortawesome/fontawesome-free/scss/regular";
+@import "~@fortawesome/fontawesome-free/scss/solid";
+
+@import "vue-select/dist/vue-select.css";
+
+.table > :not(:first-child) {
+    border-color: var(--bs-gray-300) !important; 
+}
+
+.tab-system{
+    ul.nav:hover{
+        overflow-y:hidden;
+        overflow-x: auto;
+    }
+    ul.nav {
+        flex-wrap:nowrap;
+    }
+
+    ul.nav li {
+        white-space: nowrap;
+    }
+	.nav-tabs .nav-link.router-link-exact-active, .nav-tabs .nav-item.show .nav-link {
+        border-right-color: transparent;
+        border-top-color: transparent;
+        border-left-color: transparent ;
+        border-bottom: 3px solid #EA1F25 !important;
+        color: #EA1F25;
+        font-weight: bold;
+    }
+    
+    .nav-tabs .nav-link {
+        color:#495057;
+        font-weight: 600;
+    }
+    .nav-tabs .nav-link:hover {
+        color: #EA1F25;
+        border-color: transparent;
+    }
+}
+
+.v-select-sm{
+    min-height: calc(1.5em + 0.5rem + 2px);
+    font-size: 12px;
+    background: #ffffff !important;
+    .vs__search{
+        font-size: 0.785rem !important;
+    }
+}
