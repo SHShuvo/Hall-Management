@@ -1,8 +1,5 @@
 <template>
     <div class="container mt-2">
-        <!-- <div class="d-flex justify-content-end">
-            <button class="btn btn-sm btn-danger">Logout</button>
-        </div> -->
         <div class="row">
             <div class="col-md-12">
                 <div class="tab-system">
@@ -27,10 +24,7 @@ export default {
     data(){
         return{
             tabMenues:[
-                { title:'Dashboard', name:'admin_dashboard'},
-                { title:'Students', name:'add_student_admin'},
-                { title:'Rooms', name:'add_room_admin'},
-                { title:'Departments', name:'add_department_admin'},
+                { title:'Profile', name:'student_profile'},
             ],
         }
     },

@@ -47,4 +47,8 @@ class User extends Authenticatable
     public function setPasswordAttribute($password){
         $this->attributes['password'] = bcrypt($password);
     }
+
+    public function studentDetails(){
+        return $this->hasOne(StudentDetails::class, 'user_id');
+    }
 }

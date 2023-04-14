@@ -58,10 +58,35 @@ const routes = [
                 component: () => import("./components/Operation/Room/Room"),
                 name: "add_room_admin",
             },
+            {   
+                path:'department', 
+                component: () => import("./components/Operation/Department/Department"),
+                name: "add_department_admin",
+            }
         ],
         beforeEnter: (to, from, next) => {
             let user_role = localStorage.getItem('user_role');
             if (user_role == 2) {
+              next();
+            } 
+            else {
+              next("/");
+            }
+        },
+    },
+    {
+        path:'/student', 
+        component: () => import("./components/Student/Student"),
+        children:[
+            {
+                path:'', 
+                component: () => import("./components/Student/Profile/Profile"),
+                name: "student_profile",
+            },
+        ],
+        beforeEnter: (to, from, next) => {
+            let user_role = localStorage.getItem('user_role');
+            if (user_role == 3) {
               next();
             } 
             else {

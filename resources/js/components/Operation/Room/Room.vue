@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="d-flex justify-content-between mt-3">
-            <h6 class="text-danger fw-bold">Rooms</h6>
+            <h5 class="text-danger fw-bold">Rooms</h5>
             <button @click.prevent="addRoom" class="btn btn-sm btn-primary">Add Room</button>
         </div>
         <div class="row">
@@ -9,8 +9,8 @@
                 <input type="text" v-model="search" class="form-control form-control-sm" placeholder="Search Room No">
             </div>
         </div>
-        <div class="mt-1">
-            <table class="table table-sm table-bordered">
+        <div class="mt-1 table-responsive" style="height:calc(100vh - 150px);">
+            <table class="table table-sm table-bordered tableFixHead">
                 <thead>
                     <tr class="table-danger">
                         <th>SN.</th>
@@ -39,6 +39,7 @@
                                         <td>{{st.student?st.allocated_date:''}}</td>
                                         <td class="text-center">
                                             <button @click.prevent="allocateEdit(rm, st)" class="btn btn-sm btn-outline-primary"><i class="fas fa-cog" aria-hidden="true"></i></button>
+                                            <button :disabled="!st.student" title="Cancel Allocation" @click.prevent="cancelAllocation(st)" class="btn btn-sm btn-outline-danger"><i class="fa fa-times" aria-hidden="true"></i></button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -164,6 +165,39 @@ export default {
         }
     },
     methods:{
+        cancelAllocation(st){
+            Swal.fire({
+                title: 'Do you want to cancel allocation of '+st.student.name+' ?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, cancel it!'
+            }).then((result) => {
+                if (result.value) {
+                    this.executeCancel(st.id);
+                }
+            })
+        },
+        async executeCancel(seat_id){
+            try {
+                const {data} = await axios.get(`/cancel-seat/${seat_id}`);
+                let index = this.rooms.findIndex(el=>el.id == data.id);
+                this.rooms.splice(index, 1, data);
+
+                toast.fire({
+					icon: 'success',
+					title: 'Canceled Successfully'
+				});
+            } 
+            catch (error) {
+                toast.fire({
+					icon: 'error',
+					title: 'Try again'
+				});
+            }
+        },
         allocateEdit(room, seat){
             this.allocationForm.room_number = room.room_number;
             this.allocationForm.seat_number = seat.seat_number;
@@ -178,7 +212,9 @@ export default {
             this.errors = [];
             try {
                 const {data} = await axios.post('/update-allocation', this.allocationForm);
-                console.log(data);
+                let index = this.rooms.findIndex(el=>el.id == data.id);
+                this.rooms.splice(index, 1, data);
+
     		    this.alModal.hide();
                 this.allocationForm = {
                     room_number:null,
@@ -193,9 +229,16 @@ export default {
 				});
             } 
             catch (error) {
-                console.log(error);
-                if(error.response.status == 422){
+                if(error.response?.status == 422){
                     this.errors = error.response.data.errors;
+                }
+                if(error.response?.status == 403){
+                    let error_msg = `Student is already attached to room no ${error.response?.data?.room_number}`
+                    toast.fire({
+                        icon: 'error',
+                        title: error_msg
+                    });
+                    return;
                 }
 				toast.fire({
 					icon: 'error',
@@ -268,4 +311,17 @@ export default {
         padding: 0.1rem 0.5rem !important;
         font-size: 0.75rem !important;
     }
+    button:disabled {
+        cursor: not-allowed;
+        pointer-events: all !important;
+    }
+    .tableFixHead>thead th{
+        position: sticky;
+        top: -2px;
+        z-index: 999;
+    }
+    /* .tableFixHead>tfoot td{
+        position: sticky;
+        bottom: -1px;
+    } */
 </style>

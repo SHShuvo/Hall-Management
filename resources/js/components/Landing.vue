@@ -88,6 +88,9 @@ export default {
             }
 			if (user_role == 2) {
                 this.$router.push({ name: 'admin_dashboard' });
+            }
+			if (user_role == 3) {
+                this.$router.push({ name: 'student_profile' });
             }  
 		},
         async logout(){

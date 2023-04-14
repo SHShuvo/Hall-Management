@@ -44,12 +44,36 @@ class RoomController extends Controller
                 'allocated_date' => 'required',
             ],
         );
+
+        $student_is_allocated = Seat::where('allocated_user', $request->student_id)->first();
+        if($student_is_allocated){
+            $room = Room::where('id', $student_is_allocated->room_id)->first();
+            return response(['room_number'=>$room->room_number], 403);
+        }
         $seat = Seat::findOrFail($request->seat_id);
         $seat->allocated_user = $request->student_id;
         $seat->allocated_date = $request->allocated_date;
         $seat->save();
 
-        $room = Room::where('id', $seat->room_id)->with('seats')->first();
+        $room = Room::where('id', $seat->room_id)->with([
+            'seats', 
+            'seats.student'=>function($q){
+                $q->select('id', 'name', 'roll');
+            }
+        ])->first();
+        return response($room, 200);
+    }
+    public function cancelAllocation($seat_id){
+        $seat = Seat::findOrFail($seat_id);
+        $seat->allocated_user = null;
+        $seat->allocated_date = null;
+        $seat->save();
+        $room = Room::where('id', $seat->room_id)->with([
+            'seats', 
+            'seats.student'=>function($q){
+                $q->select('id', 'name', 'roll');
+            }
+        ])->first();
         return response($room, 200);
     }
 }
