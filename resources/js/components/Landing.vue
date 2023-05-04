@@ -29,8 +29,8 @@
 				<div class="col-md-4">
 					<form>
 						<div class="form-group">
-							<label for="email">Email</label>
-							<input type="email" v-model="email" class="form-control form-control-sm" id="email" placeholder="Enter email" required>
+							<label for="email">Roll/Email</label>
+							<input type="email" v-model="email" class="form-control form-control-sm" id="email" placeholder="Enter roll/email" required>
 						</div>
 						<div class="form-group mt-3">
 							<label for="password">Password</label>

@@ -25,6 +25,7 @@ export default {
         return{
             tabMenues:[
                 { title:'Profile', name:'student_profile'},
+                { title:'Certificate', name:'student_certificate'},
             ],
         }
     },

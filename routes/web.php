@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Department\DepartmentController;
+use App\Http\Controllers\Payment\PaymentController;
 use App\Http\Controllers\Room\RoomController;
 use App\Http\Controllers\Student\StudentController;
 use Illuminate\Support\Facades\Route;
@@ -39,6 +40,10 @@ Route::get('/cancel-seat/{seat_id}', [RoomController::class, 'cancelAllocation']
 //Department
 Route::post('/store-department', [DepartmentController::class, 'store']);
 Route::get('/all-department', [DepartmentController::class, 'index']);
+
+//Payment
+Route::post('/payment', [PaymentController::class, 'store']);
+Route::get('/get-payments', [PaymentController::class, 'index']);
 
 
 Route::get('/{any?}', function () {

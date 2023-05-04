@@ -31,6 +31,7 @@ export default {
                 { title:'Students', name:'add_student_admin'},
                 { title:'Rooms', name:'add_room_admin'},
                 { title:'Departments', name:'add_department_admin'},
+                { title:'Payments', name:'payments_admin'},
             ],
         }
     },

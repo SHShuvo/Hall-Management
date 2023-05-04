@@ -16,6 +16,7 @@
                     <p><strong>Department:</strong>&nbsp;{{student_info.department}}</p>
                     <p><strong>Email:</strong>&nbsp;{{student_info.email}}</p>
                     <p><strong>Session:</strong>&nbsp; {{student_info.session}}</p>
+                    <p><strong>Phone:</strong>&nbsp; {{student_info.phone}}</p>
                 </div>
             </div>
             <div class="col-md-2">
@@ -95,6 +96,12 @@
                         </div>
                     </div>
                     <div class="form-group row mt-3">
+                        <label class="col-sm-4" style="font-weight:normal">Phone</label>
+                        <div class="col-sm-7 mr-1">
+                            <input type="text" v-model="userForm.phone" class="form-control form-control-sm" placeholder="Phone">
+                        </div>
+                    </div>
+                    <div class="form-group row mt-3">
                         <div class="offset-sm-4 col-sm-7">
                             <button @click.prevent="userUpdate" class="btn btn-sm btn-info btn-block w-100">Submit</button>
                         </div>
@@ -126,6 +133,7 @@ export default {
                 department:null,
                 email:null,
                 session:null,
+                phone:null,
             },
             departments:[],
         }
@@ -136,6 +144,7 @@ export default {
             this.student_info = data;
             this.student_info.session = data.student_details?.session;
             this.student_info.department = data.student_details?.department_detail?.name;
+            this.student_info.department_code = data.student_details?.department_detail?.code;
         },
         editPassword(){
             this.passwordModal = new Modal(document.getElementById('passwordModal'));
@@ -143,9 +152,10 @@ export default {
         },
         editUser(){
             this.userForm.name = this.student_info.name;
-            this.userForm.department = this.student_info.department;
+            this.userForm.department = this.student_info.department_code;
             this.userForm.email = this.student_info.email;
             this.userForm.session = this.student_info.session;
+            this.userForm.phone = this.student_info.phone;
 
             this.userModal = new Modal(document.getElementById('userModal'));
     		this.userModal.show();
@@ -175,6 +185,7 @@ export default {
                         department:null,
                         email:null,
                         session:null,
+                        phone:null,
                     }
                 }
             }

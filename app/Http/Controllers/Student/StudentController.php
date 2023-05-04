@@ -11,7 +11,17 @@ use Illuminate\Support\Facades\DB;
 class StudentController extends Controller
 {
     public function allStudents(Request $request){
-        return User::where('role_id', 3)->get();
+        $today = \Carbon\Carbon::today();
+        return User::where('role_id', 3)
+		->with([
+			'studentDetails'=>function($q) use($today){
+				$q->select('user_id','department', 'session', 'allocated_date', 'cancelled_date', 
+				DB::raw("DATEDIFF(IF(cancelled_date IS NULL , '$today', cancelled_date), allocated_date)*8.21 AS charge"));
+			}, 
+			'studentDetails.departmentDetail'
+		])
+		->withSum('payments', 'amount')
+		->get(['id', 'name', 'roll', 'email', 'phone']);
     }
 
 	public function studentAllocation(Request $request){
@@ -20,22 +30,34 @@ class StudentController extends Controller
 
     public function registerStudent(Request $request){
 		$this->validate($request,[
-			'roll'    => 'required',
-			'email'    => 'required|email|unique:users',
+			'name'    	=> 'required',
+			'roll'    	=> 'required',
+			'session' 	=> 'required',
+			'department'=> 'required',
+			'phone'		=> 'required',
+			'email'   	=> 'email|nullable|unique:users',
+			'password' 	=> 'required',
 		]);
 		$user = User::create([
 			'name'    	=> $request->name,
 			'roll'    	=> $request->roll,
 			'email'    	=> $request->email,
+			'phone'		=> $request->phone,
 			'role_id'	=> 3,
-			'password' 	=> '1234',
+			'password' 	=> $request->password,
+		]);
+
+		StudentDetails::create([
+			'user_id'=>$user->id,
+			'session'=> $request->session,
+			'department'=>$request->department,
 		]);
 		return response($user, 200);
 	}
 
 	public function profileInfo(){
 		$user = User::where('id', auth()->user()->id)->with('studentDetails', 'studentDetails.departmentDetail')
-		->select('id', 'roll', 'email', 'name')->first();
+		->select('id', 'roll', 'email', 'name', 'phone')->first();
 		return $user;
 	}
 
@@ -43,6 +65,7 @@ class StudentController extends Controller
 		$user = User::where('id', auth()->user()->id)->first();
 		$user->name = $request->name;
 		$user->email = $request->email;
+		$user->phone = $request->phone;
 		$user->save();
 
 		$student_detail = StudentDetails::where('user_id', $user->id)->first();

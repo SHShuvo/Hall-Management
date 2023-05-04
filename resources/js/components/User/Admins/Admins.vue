@@ -7,17 +7,19 @@
     <div class="mt-4">
         <table class="table table-sm table-bordered">
             <thead>
-                <tr class="table-secondary">
+                <tr class="table-danger">
                     <th>SN.</th>
                     <th>Name</th>
-                    <th></th>
+                    <th>Email</th>
+                    <th>Phone</th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="(ad, index) in admins" :key="'ad'+index">
                     <td>{{index+1}}</td>
                     <td>{{ad.name}}</td>
-                    <td>{{}}</td>
+                    <td>{{ad.email}}</td>
+                    <td>{{ad.phone}}</td>
                 </tr>
             </tbody>
         </table>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Room;
 use App\Http\Controllers\Controller;
 use App\Models\Room;
 use App\Models\Seat;
+use App\Models\StudentDetails;
 use Illuminate\Http\Request;
 
 class RoomController extends Controller
@@ -55,6 +56,11 @@ class RoomController extends Controller
         $seat->allocated_date = $request->allocated_date;
         $seat->save();
 
+        $student_details = StudentDetails::where('user_id', $request->student_id)->first();
+        $student_details->allocated_date = $request->allocated_date;
+        $student_details->cancelled_date = null;
+        $student_details->save();
+
         $room = Room::where('id', $seat->room_id)->with([
             'seats', 
             'seats.student'=>function($q){
@@ -65,6 +71,12 @@ class RoomController extends Controller
     }
     public function cancelAllocation($seat_id){
         $seat = Seat::findOrFail($seat_id);
+
+        $student_details = StudentDetails::where('user_id', $seat->allocated_user)->first();
+        $today = \Carbon\Carbon::today();
+        $student_details->cancelled_date = $today;
+        $student_details->save();
+
         $seat->allocated_user = null;
         $seat->allocated_date = null;
         $seat->save();

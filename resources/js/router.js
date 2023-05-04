@@ -62,6 +62,11 @@ const routes = [
                 path:'department', 
                 component: () => import("./components/Operation/Department/Department"),
                 name: "add_department_admin",
+            },
+            {   
+                path:'payment', 
+                component: () => import("./components/Operation/Payments/Payments"),
+                name: "payments_admin",
             }
         ],
         beforeEnter: (to, from, next) => {
@@ -82,6 +87,11 @@ const routes = [
                 path:'', 
                 component: () => import("./components/Student/Profile/Profile"),
                 name: "student_profile",
+            },
+            {
+                path:'certificate', 
+                component: () => import("./components/Student/Certificate/Certificate"),
+                name: "student_certificate",
             },
         ],
         beforeEnter: (to, from, next) => {
