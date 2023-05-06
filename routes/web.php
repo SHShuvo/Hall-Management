@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Certificate\Certificatecontroller;
 use App\Http\Controllers\Department\DepartmentController;
 use App\Http\Controllers\Payment\PaymentController;
 use App\Http\Controllers\Room\RoomController;
@@ -45,6 +46,8 @@ Route::get('/all-department', [DepartmentController::class, 'index']);
 Route::post('/payment', [PaymentController::class, 'store']);
 Route::get('/get-payments', [PaymentController::class, 'index']);
 
+//Certificate
+Route::get('/generate-pdf', [Certificatecontroller::class, 'generatePDF']);
 
 Route::get('/{any?}', function () {
     return view('welcome');
