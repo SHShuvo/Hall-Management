@@ -11,6 +11,30 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -22,10 +46,51 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      chargeInfo: {
+        student_details: {}
+      }
+    };
+  },
+  computed: {
+    dueAmount: function dueAmount() {
+      return (Number(this.chargeInfo.student_details.charge) - Number(this.chargeInfo.payments_sum_amount)).toFixed(2);
+    }
+  },
   methods: {
     pdfDownload: function pdfDownload() {
       window.open('/generate-pdf');
+    },
+    loadChargeInfo: function loadChargeInfo() {
+      var _this = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+        var _yield$axios$get, data;
+
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return axios.get('/charge-info');
+
+              case 2:
+                _yield$axios$get = _context.sent;
+                data = _yield$axios$get.data;
+                _this.chargeInfo = data;
+
+              case 5:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }))();
     }
+  },
+  created: function created() {
+    this.loadChargeInfo();
   }
 });
 
@@ -537,6 +602,46 @@ var render = function () {
   return _c("div", [
     _vm._m(0),
     _vm._v(" "),
+    _c("div", { staticClass: "mt-2 card p-3" }, [
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-md-3" }, [
+          _c("div", { staticClass: "card flex-row p-2" }, [
+            _c("span", { staticClass: "fw-bold" }, [
+              _vm._v("Hall Attached Date:  "),
+            ]),
+            _vm._v(_vm._s(_vm.chargeInfo.student_details.allocated_date) + " "),
+          ]),
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-3" }, [
+          _c("div", { staticClass: "card flex-row p-2" }, [
+            _c("span", { staticClass: "fw-bold" }, [
+              _vm._v("Total Charge(Tk.):  "),
+            ]),
+            _vm._v(_vm._s(_vm.chargeInfo.student_details.charge) + " "),
+          ]),
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-3" }, [
+          _c("div", { staticClass: "card flex-row p-2" }, [
+            _c("span", { staticClass: "fw-bold" }, [
+              _vm._v("Total Paid(Tk.):  "),
+            ]),
+            _vm._v(_vm._s(_vm.chargeInfo.payments_sum_amount) + " "),
+          ]),
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-3" }, [
+          _c("div", { staticClass: "card flex-row p-2" }, [
+            _c("span", { staticClass: "fw-bold" }, [
+              _vm._v("Total Due(Tk.):  "),
+            ]),
+            _vm._v(_vm._s(_vm.dueAmount) + " "),
+          ]),
+        ]),
+      ]),
+    ]),
+    _vm._v(" "),
     _c("div", { staticClass: "text-center profile-card mt-5" }, [
       _c(
         "button",
@@ -549,7 +654,7 @@ var render = function () {
             },
           },
         },
-        [_vm._v("Download")]
+        [_vm._v("Download Certificate")]
       ),
     ]),
   ])
@@ -560,7 +665,9 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "d-flex justify-content-between mt-3" }, [
-      _c("h5", { staticClass: "text-danger fw-bold" }, [_vm._v("Certificate")]),
+      _c("h5", { staticClass: "text-danger fw-bold" }, [
+        _vm._v("Hall Clearance Certificate"),
+      ]),
     ])
   },
 ]

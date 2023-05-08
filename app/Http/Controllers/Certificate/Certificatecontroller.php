@@ -26,7 +26,8 @@ class Certificatecontroller extends Controller
 
         $data = [
             'student' => $student,
-            'date' => date('m/d/Y')
+            'date' => date('d M Y'),
+            'logo' => 'logo.png',
         ];
           
         $pdf = PDF::loadView('myPDF', $data);

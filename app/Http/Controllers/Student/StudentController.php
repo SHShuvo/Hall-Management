@@ -24,6 +24,19 @@ class StudentController extends Controller
 		->get(['id', 'name', 'roll', 'email', 'phone']);
     }
 
+	public function studentChargeInfo(Request $request){
+        $today = \Carbon\Carbon::today();
+        return User::where('id', auth()->user()->id)
+		->with([
+			'studentDetails'=>function($q) use($today){
+				$q->select('user_id', 'allocated_date', 'cancelled_date', 
+				DB::raw("DATEDIFF(IF(cancelled_date IS NULL , '$today', cancelled_date), allocated_date)*8.21 AS charge"));
+			}, 
+		])
+		->withSum('payments', 'amount')
+		->first(['id']);
+    }
+
 	public function studentAllocation(Request $request){
 		return User::where('role_id', 3)->get(['id', 'name', 'roll', DB::raw("CONCAT(name,'-',roll) as name_roll")]);
 	}

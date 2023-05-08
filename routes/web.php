@@ -25,6 +25,7 @@ Route::get('/students', [StudentController::class, 'allStudents']);
 Route::get('/students-room-allocation', [StudentController::class, 'studentAllocation']);
 Route::get('/profile-info', [StudentController::class, 'profileInfo']);
 Route::post('/student-update', [StudentController::class, 'userUpdate']);
+Route::get('/charge-info', [StudentController::class, 'studentChargeInfo']);
 
 //admins
 Route::post('/register-admin', [AdminController::class, 'registerAdmin']);
@@ -45,6 +46,7 @@ Route::get('/all-department', [DepartmentController::class, 'index']);
 //Payment
 Route::post('/payment', [PaymentController::class, 'store']);
 Route::get('/get-payments', [PaymentController::class, 'index']);
+Route::get('/get-payments-studentwise', [PaymentController::class, 'paymentStudentWise']);
 
 //Certificate
 Route::get('/generate-pdf', [Certificatecontroller::class, 'generatePDF']);

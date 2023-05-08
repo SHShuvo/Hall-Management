@@ -89,6 +89,11 @@ const routes = [
                 name: "student_profile",
             },
             {
+                path:'payment', 
+                component: () => import("./components/Student/History/History"),
+                name: "student_payment",
+            },
+            {
                 path:'certificate', 
                 component: () => import("./components/Student/Certificate/Certificate"),
                 name: "student_certificate",

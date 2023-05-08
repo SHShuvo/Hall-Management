@@ -47,6 +47,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         title: 'Profile',
         name: 'student_profile'
       }, {
+        title: 'Payment History',
+        name: 'student_payment'
+      }, {
         title: 'Certificate',
         name: 'student_certificate'
       }]

@@ -14,6 +14,12 @@ class PaymentController extends Controller
         }])->latest()->take(30)->get(['id', 'date', 'amount', 'user_id']);
         return response($payements, 200);
     }
+    public function paymentStudentWise(){
+        $payements = Payment::where('user_id', auth()->user()->id)->with(['user'=>function($q){
+            $q->select('id', 'name', 'roll');
+        }])->get(['id', 'date', 'amount', 'user_id']);
+        return response($payements, 200);
+    }
     public function store(Request $request){
         $request->validate([
             'student_id' => 'required',
