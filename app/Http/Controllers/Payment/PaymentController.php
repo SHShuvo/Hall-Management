@@ -8,10 +8,16 @@ use Illuminate\Http\Request;
 
 class PaymentController extends Controller
 {
-    public function index(){
-        $payements = Payment::with(['user'=>function($q){
+    public function index(Request $request){
+        $request->validate([
+            'from_date' => 'required',
+            'to_date' => 'required',
+        ]);
+
+        $payements = Payment::whereBetween('date', [$request->from_date, $request->to_date])
+        ->with(['user'=>function($q){
             $q->select('id', 'name', 'roll');
-        }])->latest()->take(30)->get(['id', 'date', 'amount', 'user_id']);
+        }])->get(['id', 'date', 'amount', 'user_id']);
         return response($payements, 200);
     }
     public function paymentStudentWise(){
@@ -33,5 +39,14 @@ class PaymentController extends Controller
             'date'=>$request->date,
         ]);
         return response($new, 201);
+    }
+
+    public function paymentDateWise(Request $request){
+        $request->validate([
+            'from_date' => 'required',
+            'to_date' => 'required',
+        ]);
+        $total = Payment::whereBetween('date', [$request->from_date, $request->to_date])->sum('amount');
+        return response($total, 200);
     }
 }

@@ -14,4 +14,7 @@ class Seat extends Model
     public function student(){
         return $this->belongsTo(User::class, 'allocated_user');
     }
+    public function room(){
+        return $this->belongsTo(Room::class, 'room_id');
+    }
 }

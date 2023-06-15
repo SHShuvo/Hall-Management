@@ -79,6 +79,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -87,9 +100,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         amount: null,
         date: null
       },
-      makePayment: true,
+      makePayment: false,
       students: [],
       payments: [],
+      from_date: null,
+      to_date: null,
       errors: []
     };
   },
@@ -132,7 +147,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.next = 2;
-                return axios.get('/get-payments');
+                return axios.get('/get-payments', {
+                  params: {
+                    from_date: _this2.from_date,
+                    to_date: _this2.to_date
+                  }
+                });
 
               case 2:
                 _yield$axios$get2 = _context2.sent;
@@ -212,7 +232,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     var Month = ("0" + (dates.getMonth() + 1)).slice(-2);
     var Day = ("0" + dates.getDate()).slice(-2);
     this.paymentForm.date = Year + '-' + Month + '-01';
-    this.to_date = this.from_date = Year + '-' + Month + '-' + Day;
+    this.from_date = Year + '-' + Month + '-' + '01';
+    this.to_date = Year + '-' + Month + '-' + Day;
     this.loadStudents();
     this.loadPayments();
   }
@@ -872,7 +893,78 @@ var render = function () {
         ])
       : _vm._e(),
     _vm._v(" "),
-    _c("div", { staticClass: "row mt-4" }, [
+    _c("div", { staticClass: "row mt-3" }, [
+      _c("div", { staticClass: "col-md-3" }, [
+        _c("label", { attrs: { for: "" } }, [_vm._v("From Date:")]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.from_date,
+              expression: "from_date",
+            },
+          ],
+          staticClass: "form-control form-control-sm",
+          attrs: { type: "text", onfocus: "(this.type='date')" },
+          domProps: { value: _vm.from_date },
+          on: {
+            input: function ($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.from_date = $event.target.value
+            },
+          },
+        }),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-3" }, [
+        _c("label", { attrs: { for: "" } }, [_vm._v("To Date:")]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.to_date,
+              expression: "to_date",
+            },
+          ],
+          staticClass: "form-control form-control-sm",
+          attrs: { type: "text", onfocus: "(this.type='date')" },
+          domProps: { value: _vm.to_date },
+          on: {
+            input: function ($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.to_date = $event.target.value
+            },
+          },
+        }),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-2" }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-sm btn-success px-4",
+            staticStyle: { "margin-top": "23px" },
+            on: {
+              click: function ($event) {
+                $event.preventDefault()
+                return _vm.loadPayments.apply(null, arguments)
+              },
+            },
+          },
+          [_vm._v("Load")]
+        ),
+      ]),
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "row mt-3" }, [
       _c("div", { staticClass: "col-md-12" }, [
         _c(
           "table",

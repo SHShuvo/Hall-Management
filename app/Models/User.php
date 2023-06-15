@@ -55,4 +55,8 @@ class User extends Authenticatable
     public function payments(){
         return $this->hasMany(Payment::class, 'user_id');
     }
+
+    public function seat(){
+        return $this->hasOne(Seat::class, 'allocated_user');
+    }
 }

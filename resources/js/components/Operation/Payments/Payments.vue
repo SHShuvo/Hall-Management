@@ -32,7 +32,20 @@
                 <button @click="submitPayment" class="btn btn-sm btn-success px-4">Save</button>
             </div>
         </div>
-        <div class="row mt-4">
+        <div class="row mt-3">
+            <div class="col-md-3">
+                <label for="">From Date:</label>
+                <input type="text" v-model="from_date" class="form-control form-control-sm" onfocus="(this.type='date')">
+            </div>
+            <div class="col-md-3">
+                <label for="">To Date:</label>
+                <input type="text" v-model="to_date" class="form-control form-control-sm" onfocus="(this.type='date')">
+            </div>
+            <div class="col-md-2">
+                <button @click.prevent="loadPayments" style="margin-top: 23px" class="btn btn-sm btn-success px-4">Load</button>
+            </div>
+        </div>
+        <div class="row mt-3">
             <div class="col-md-12">
                 <table class="table table-sm table-bordered tableFixHead">
                     <thead>
@@ -67,9 +80,11 @@ export default {
                 amount:null,
                 date:null,
             },
-            makePayment:true,
+            makePayment:false,
             students:[],
             payments:[],
+            from_date:null,
+            to_date:null,
             errors:[],
         }
     },
@@ -82,7 +97,12 @@ export default {
             this.students = data;
         },
         async loadPayments(){
-            const {data} = await axios.get('/get-payments');
+            const {data} = await axios.get('/get-payments',{
+                params:{
+                    from_date:this.from_date,
+                    to_date:this.to_date
+                }
+            });
             this.payments = data.map(el=>{
                 el.name = el.user?.name;
                 el.roll = el.user?.roll;
@@ -119,7 +139,8 @@ export default {
         let Month =("0" + (dates.getMonth() + 1)).slice(-2);
         let Day = ("0" + (dates.getDate())).slice(-2);
         this.paymentForm.date = Year+'-'+Month+'-01';
-        this.to_date = this.from_date = Year+'-'+Month+'-'+Day;
+        this.from_date = Year+'-'+Month+'-'+'01';
+        this.to_date = Year+'-'+Month+'-'+Day;
         this.loadStudents();
         this.loadPayments();
     }

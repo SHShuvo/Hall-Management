@@ -22,6 +22,7 @@
                     <th>Cancelled Date</th>
                     <th>Total Charge</th>
                     <th>Paid</th>
+                    <th>Due</th>
                     <th>Phone</th>
                     <th>Email</th>
                 </tr>
@@ -37,10 +38,20 @@
                     <td>{{stu.cancelled_date}}</td>
                     <td class="text-end">{{stu.total_charge}}</td>
                     <td class="text-end">{{stu.payments_sum_amount}}</td>
+                    <td class="text-end">{{(stu.total_charge - stu.payments_sum_amount).toFixed(2)}}</td>
                     <td>{{stu.phone}}</td>
                     <td>{{stu.email}}</td>
                 </tr>
             </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="7">Total</th>
+                    <th class="text-end">{{rowTotalCharge}}</th>
+                    <th class="text-end">{{rowTotalPayment}}</th>
+                    <th class="text-end">{{rowTotalDue}}</th>
+                    <th colspan="2"></th>
+                </tr>
+            </tfoot>
         </table>
     </div>
     
@@ -135,6 +146,19 @@ export default {
                 return el.roll.toString().toLowerCase().includes(keyword) 
                 || el.department.toString().toLowerCase().includes(keyword);
             })
+        },
+        rowTotalCharge(){
+            return this.filteredStudents.reduce((pre, cur)=>{
+                return pre+ Number(cur.total_charge);
+            }, 0).toFixed(2);
+        },
+        rowTotalPayment(){
+            return this.filteredStudents.reduce((pre, cur)=>{
+                return pre+ Number(cur.payments_sum_amount);
+            }, 0).toFixed(2);
+        },
+        rowTotalDue(){
+            return (this.rowTotalCharge - this.rowTotalPayment).toFixed(2);
         }
     },
     methods:{

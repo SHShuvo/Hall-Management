@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Certificate\Certificatecontroller;
 use App\Http\Controllers\Department\DepartmentController;
 use App\Http\Controllers\Payment\PaymentController;
+use App\Http\Controllers\Room\MigrationController;
 use App\Http\Controllers\Room\RoomController;
 use App\Http\Controllers\Student\StudentController;
 use Illuminate\Support\Facades\Route;
@@ -38,6 +39,7 @@ Route::get('/get-rooms', [RoomController::class, 'index']);
 //seat
 Route::post('/update-allocation', [RoomController::class, 'updateAllocation']);
 Route::get('/cancel-seat/{seat_id}', [RoomController::class, 'cancelAllocation']);
+Route::get('/get-seat-info', [RoomController::class, 'seatInfo']);
 
 //Department
 Route::post('/store-department', [DepartmentController::class, 'store']);
@@ -47,9 +49,15 @@ Route::get('/all-department', [DepartmentController::class, 'index']);
 Route::post('/payment', [PaymentController::class, 'store']);
 Route::get('/get-payments', [PaymentController::class, 'index']);
 Route::get('/get-payments-studentwise', [PaymentController::class, 'paymentStudentWise']);
+Route::get('/get-payment-info', [PaymentController::class, 'paymentDateWise']);
 
 //Certificate
 Route::get('/generate-pdf', [Certificatecontroller::class, 'generatePDF']);
+
+//migration
+Route::get('/migration-info', [MigrationController::class, 'sudentDetails']);
+Route::get('/available-rooms-migration', [MigrationController::class, 'availableRooms']);
+Route::post('/submit-migration', [MigrationController::class, 'migration']);
 
 Route::get('/{any?}', function () {
     return view('welcome');

@@ -98,6 +98,11 @@ const routes = [
                 component: () => import("./components/Student/Certificate/Certificate"),
                 name: "student_certificate",
             },
+            {
+                path:'migration', 
+                component: () => import("./components/Student/Migration/Migration"),
+                name: "student_migration",
+            },
         ],
         beforeEnter: (to, from, next) => {
             let user_role = localStorage.getItem('user_role');

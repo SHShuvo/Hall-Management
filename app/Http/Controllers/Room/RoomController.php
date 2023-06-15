@@ -88,4 +88,10 @@ class RoomController extends Controller
         ])->first();
         return response($room, 200);
     }
+
+    public function seatInfo(){
+        $all_seats = Seat::count();
+        $alocated_seats = Seat::whereNotNull('allocated_user')->count();
+        return response(compact('all_seats', 'alocated_seats'), 200);
+    }
 }

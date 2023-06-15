@@ -128,6 +128,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -155,6 +166,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       return this.students.filter(function (el) {
         return el.roll.toString().toLowerCase().includes(keyword) || el.department.toString().toLowerCase().includes(keyword);
       });
+    },
+    rowTotalCharge: function rowTotalCharge() {
+      return this.filteredStudents.reduce(function (pre, cur) {
+        return pre + Number(cur.total_charge);
+      }, 0).toFixed(2);
+    },
+    rowTotalPayment: function rowTotalPayment() {
+      return this.filteredStudents.reduce(function (pre, cur) {
+        return pre + Number(cur.payments_sum_amount);
+      }, 0).toFixed(2);
+    },
+    rowTotalDue: function rowTotalDue() {
+      return (this.rowTotalCharge - this.rowTotalPayment).toFixed(2);
     }
   },
   methods: {
@@ -452,6 +476,14 @@ var render = function () {
                 _vm._v(_vm._s(stu.payments_sum_amount)),
               ]),
               _vm._v(" "),
+              _c("td", { staticClass: "text-end" }, [
+                _vm._v(
+                  _vm._s(
+                    (stu.total_charge - stu.payments_sum_amount).toFixed(2)
+                  )
+                ),
+              ]),
+              _vm._v(" "),
               _c("td", [_vm._v(_vm._s(stu.phone))]),
               _vm._v(" "),
               _c("td", [_vm._v(_vm._s(stu.email))]),
@@ -459,6 +491,26 @@ var render = function () {
           }),
           0
         ),
+        _vm._v(" "),
+        _c("tfoot", [
+          _c("tr", [
+            _c("th", { attrs: { colspan: "7" } }, [_vm._v("Total")]),
+            _vm._v(" "),
+            _c("th", { staticClass: "text-end" }, [
+              _vm._v(_vm._s(_vm.rowTotalCharge)),
+            ]),
+            _vm._v(" "),
+            _c("th", { staticClass: "text-end" }, [
+              _vm._v(_vm._s(_vm.rowTotalPayment)),
+            ]),
+            _vm._v(" "),
+            _c("th", { staticClass: "text-end" }, [
+              _vm._v(_vm._s(_vm.rowTotalDue)),
+            ]),
+            _vm._v(" "),
+            _c("th", { attrs: { colspan: "2" } }),
+          ]),
+        ]),
       ]),
     ]),
     _vm._v(" "),
@@ -796,6 +848,8 @@ var staticRenderFns = [
         _c("th", [_vm._v("Total Charge")]),
         _vm._v(" "),
         _c("th", [_vm._v("Paid")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Due")]),
         _vm._v(" "),
         _c("th", [_vm._v("Phone")]),
         _vm._v(" "),

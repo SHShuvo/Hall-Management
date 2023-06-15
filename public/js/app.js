@@ -5570,6 +5570,12 @@ var routes = [{
       return __webpack_require__.e(/*! import() */ "resources_js_components_Student_Certificate_Certificate_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/Student/Certificate/Certificate */ "./resources/js/components/Student/Certificate/Certificate.vue"));
     },
     name: "student_certificate"
+  }, {
+    path: 'migration',
+    component: function component() {
+      return __webpack_require__.e(/*! import() */ "resources_js_components_Student_Migration_Migration_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/Student/Migration/Migration */ "./resources/js/components/Student/Migration/Migration.vue"));
+    },
+    name: "student_migration"
   }],
   beforeEnter: function beforeEnter(to, from, next) {
     var user_role = localStorage.getItem('user_role');
@@ -47791,7 +47797,7 @@ module.exports = JSON.parse('{"name":"axios","version":"0.21.4","description":"P
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames not based on template
-/******/ 			if ({"resources_js_components_Landing_vue":1,"resources_js_components_Provost_Provost_vue":1,"resources_js_components_Provost_Dashboard_Dashboard_vue":1,"resources_js_components_User_Students_Students_vue":1,"resources_js_components_User_Admins_Admins_vue":1,"resources_js_components_Admin_Admin_vue":1,"resources_js_components_Admin_Dashboard_Dashboard_vue":1,"resources_js_components_Operation_Room_Room_vue":1,"resources_js_components_Operation_Department_Department_vue":1,"resources_js_components_Operation_Payments_Payments_vue":1,"resources_js_components_Student_Student_vue":1,"resources_js_components_Student_Profile_Profile_vue":1,"resources_js_components_Student_History_History_vue":1,"resources_js_components_Student_Certificate_Certificate_vue":1}[chunkId]) return "js/" + chunkId + ".js";
+/******/ 			if ({"resources_js_components_Landing_vue":1,"resources_js_components_Provost_Provost_vue":1,"resources_js_components_Provost_Dashboard_Dashboard_vue":1,"resources_js_components_User_Students_Students_vue":1,"resources_js_components_User_Admins_Admins_vue":1,"resources_js_components_Admin_Admin_vue":1,"resources_js_components_Admin_Dashboard_Dashboard_vue":1,"resources_js_components_Operation_Room_Room_vue":1,"resources_js_components_Operation_Department_Department_vue":1,"resources_js_components_Operation_Payments_Payments_vue":1,"resources_js_components_Student_Student_vue":1,"resources_js_components_Student_Profile_Profile_vue":1,"resources_js_components_Student_History_History_vue":1,"resources_js_components_Student_Certificate_Certificate_vue":1,"resources_js_components_Student_Migration_Migration_vue":1}[chunkId]) return "js/" + chunkId + ".js";
 /******/ 			// return url for filenames based on template
 /******/ 			return undefined;
 /******/ 		};

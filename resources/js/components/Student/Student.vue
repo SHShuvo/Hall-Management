@@ -27,6 +27,7 @@ export default {
                 { title:'Profile', name:'student_profile'},
                 { title:'Payment History', name:'student_payment'},
                 { title:'Certificate', name:'student_certificate'},
+                { title:'Migration', name:'student_migration'},
             ],
         }
     },
