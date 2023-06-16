@@ -2,10 +2,13 @@
     <div>
         <div class="d-flex justify-content-between">
             <h5 class="text-danger fw-bold">Payment</h5>
-            <button @click="makePayment = !makePayment" class="btn btn-sm btn-primary">
-                <span v-if="makePayment"><i class="fas fa-minus-circle me-1"></i> Hide</span>
-                <span v-else><i class="fas fa-plus-circle me-1"></i> Add Payment</span>
-            </button>
+            <div class="d-flex justify-content-end">
+                <button @click="makePayment = !makePayment" class="btn btn-sm btn-primary mr-2">
+                    <span v-if="makePayment"><i class="fas fa-minus-circle me-1"></i> Hide</span>
+                    <span v-else><i class="fas fa-plus-circle me-1"></i> Add Payment</span>
+                </button>
+                <button @click="printPayment" class="btn btn-sm btn-primary">Print</button>
+            </div>
         </div>
         <div v-if="makePayment" class="payment-form mt-3">
             <div class="row">
@@ -66,6 +69,13 @@
                             <td>{{pay.date}}</td>
                         </tr>
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="3">Total</th>
+                            <th class="text-end">{{totalAmount}}</th>
+                            <th></th>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>
@@ -89,9 +99,17 @@ export default {
         }
     },
     computed:{
-        
+        totalAmount(){
+            return this.payments.reduce((pre, cur)=>{
+                return pre + Number(cur.amount);
+            },0).toFixed(2);
+        }
     },
     methods:{
+        printPayment(){
+            let url = '/generate-payment-pdf/?from_date=' + encodeURIComponent(this.from_date) + '&to_date=' + encodeURIComponent(this.to_date);
+            window.open(url);
+        },
         async loadStudents(){
             const {data} = await axios.get('/students-room-allocation');
             this.students = data;
@@ -138,7 +156,7 @@ export default {
         let Year = dates.getFullYear();
         let Month =("0" + (dates.getMonth() + 1)).slice(-2);
         let Day = ("0" + (dates.getDate())).slice(-2);
-        this.paymentForm.date = Year+'-'+Month+'-01';
+        this.paymentForm.date = Year+'-'+Month+'-'+Day;
         this.from_date = Year+'-'+Month+'-'+'01';
         this.to_date = Year+'-'+Month+'-'+Day;
         this.loadStudents();

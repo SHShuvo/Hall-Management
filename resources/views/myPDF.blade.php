@@ -64,12 +64,16 @@
             Session: <span>{{$student->studentDetails->session}}</span>,
             Department: <span>{{$student->studentDetails->departmentDetail->name}}</span>, 
             Phone: <span>{{$student->phone}}</span>, 
-            Hall Attached date: <span>{{date_format(new DateTime($student->studentDetails->allocated_date),"d/m/Y")}}</span> 
-            has total <span style="font-weight:bold;">charge (Tk.): {{$student->studentDetails->charge}}</span> 
-            and total <span style="font-weight:bold;">paid (Tk.): {{$student->payments_sum_amount}}</span>. 
-            Our Observation of record shown that 
-            <span style="font-weight:bold;"> total dues (Tk.): {{$student->studentDetails->charge - $student->payments_sum_amount}}</span> till date 
-            <span>{{$date}}</span>.   
+            @if($student->studentDetails->allocated_date)         
+                Hall Attached date: <span>{{date_format(new DateTime($student->studentDetails->allocated_date),"d/m/Y")}}</span> 
+                has total <span style="font-weight:bold;">charge (Tk.): {{$student->studentDetails->charge}}</span> 
+                and total <span style="font-weight:bold;">paid (Tk.): {{$student->payments_sum_amount}}</span>. 
+                Our Observation of record shown that 
+                <span style="font-weight:bold;"> total dues (Tk.): {{$student->studentDetails->charge - $student->payments_sum_amount}}</span> till date 
+                <span>{{$date}}</span>.   
+            @else
+            Our Observation of record shown that he is a <span style="font-weight:bold;">non residential</span> student.
+            @endif
         </div>
     </div>
 

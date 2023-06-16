@@ -50,6 +50,7 @@ Route::post('/payment', [PaymentController::class, 'store']);
 Route::get('/get-payments', [PaymentController::class, 'index']);
 Route::get('/get-payments-studentwise', [PaymentController::class, 'paymentStudentWise']);
 Route::get('/get-payment-info', [PaymentController::class, 'paymentDateWise']);
+Route::get('/generate-payment-pdf', [PaymentController::class, 'generatePdf']);
 
 //Certificate
 Route::get('/generate-pdf', [Certificatecontroller::class, 'generatePDF']);

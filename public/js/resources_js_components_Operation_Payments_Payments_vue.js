@@ -92,6 +92,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -108,8 +118,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       errors: []
     };
   },
-  computed: {},
+  computed: {
+    totalAmount: function totalAmount() {
+      return this.payments.reduce(function (pre, cur) {
+        return pre + Number(cur.amount);
+      }, 0).toFixed(2);
+    }
+  },
   methods: {
+    printPayment: function printPayment() {
+      var url = '/generate-payment-pdf/?from_date=' + encodeURIComponent(this.from_date) + '&to_date=' + encodeURIComponent(this.to_date);
+      window.open(url);
+    },
     loadStudents: function loadStudents() {
       var _this = this;
 
@@ -231,7 +251,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     var Year = dates.getFullYear();
     var Month = ("0" + (dates.getMonth() + 1)).slice(-2);
     var Day = ("0" + dates.getDate()).slice(-2);
-    this.paymentForm.date = Year + '-' + Month + '-01';
+    this.paymentForm.date = Year + '-' + Month + '-' + Day;
     this.from_date = Year + '-' + Month + '-' + '01';
     this.to_date = Year + '-' + Month + '-' + Day;
     this.loadStudents();
@@ -748,28 +768,39 @@ var render = function () {
     _c("div", { staticClass: "d-flex justify-content-between" }, [
       _c("h5", { staticClass: "text-danger fw-bold" }, [_vm._v("Payment")]),
       _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-sm btn-primary",
-          on: {
-            click: function ($event) {
-              _vm.makePayment = !_vm.makePayment
+      _c("div", { staticClass: "d-flex justify-content-end" }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-sm btn-primary mr-2",
+            on: {
+              click: function ($event) {
+                _vm.makePayment = !_vm.makePayment
+              },
             },
           },
-        },
-        [
-          _vm.makePayment
-            ? _c("span", [
-                _c("i", { staticClass: "fas fa-minus-circle me-1" }),
-                _vm._v(" Hide"),
-              ])
-            : _c("span", [
-                _c("i", { staticClass: "fas fa-plus-circle me-1" }),
-                _vm._v(" Add Payment"),
-              ]),
-        ]
-      ),
+          [
+            _vm.makePayment
+              ? _c("span", [
+                  _c("i", { staticClass: "fas fa-minus-circle me-1" }),
+                  _vm._v(" Hide"),
+                ])
+              : _c("span", [
+                  _c("i", { staticClass: "fas fa-plus-circle me-1" }),
+                  _vm._v(" Add Payment"),
+                ]),
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-sm btn-primary",
+            on: { click: _vm.printPayment },
+          },
+          [_vm._v("Print")]
+        ),
+      ]),
     ]),
     _vm._v(" "),
     _vm.makePayment
@@ -991,6 +1022,18 @@ var render = function () {
               }),
               0
             ),
+            _vm._v(" "),
+            _c("tfoot", [
+              _c("tr", [
+                _c("th", { attrs: { colspan: "3" } }, [_vm._v("Total")]),
+                _vm._v(" "),
+                _c("th", { staticClass: "text-end" }, [
+                  _vm._v(_vm._s(_vm.totalAmount)),
+                ]),
+                _vm._v(" "),
+                _c("th"),
+              ]),
+            ]),
           ]
         ),
       ]),
