@@ -129,6 +129,31 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="cancelModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Cancel Seat</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mt-3">
+                        <h5>Do you want to cancel allocation of {{ cancelled_name}} ?</h5>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <label>Date of cancelation</label>
+                            <input type="text" v-model="cancelled_date" class="form-control form-control-sm" onfocus="(this.type='date')">
+                        </div>
+                    </div>
+                    <button @click.prevent="executeCancel" class="btn btn-sm w-100 btn-primary mt-3">Cancel Allocation</button>    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 <script>
@@ -138,6 +163,7 @@ export default {
         return{
             myModal:{},
             alModal:{},
+            cancelModal:{},
             roomForm:{
                 room_number:null,
                 number_of_seats:null,
@@ -150,6 +176,9 @@ export default {
                 allocated_date:null,
             },
             search:'',
+            cancelled_date:null,
+            cancelled_name:null,
+            cancelled_seat_id:null,
             rooms:[],
             students:[],
             errors:[],
@@ -166,26 +195,22 @@ export default {
     },
     methods:{
         cancelAllocation(st){
-            Swal.fire({
-                title: 'Do you want to cancel allocation of '+st.student.name+' ?',
-                text: "You won't be able to revert this!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, cancel it!'
-            }).then((result) => {
-                if (result.value) {
-                    this.executeCancel(st.id);
-                }
-            })
+            this.cancelled_seat_id = st.id;
+            this.cancelled_name = st.student.name;
+            this.cancelModal = new Modal(document.getElementById('cancelModal'));
+    		this.cancelModal.show();
         },
-        async executeCancel(seat_id){
+        async executeCancel(){
             try {
-                const {data} = await axios.get(`/cancel-seat/${seat_id}`);
+                const {data} = await axios.get(`/cancel-seat`,{
+                    params:{
+                        cancelled_seat_id: this.cancelled_seat_id,
+                        cancelled_date: this.cancelled_date
+                    }
+                });
                 let index = this.rooms.findIndex(el=>el.id == data.id);
                 this.rooms.splice(index, 1, data);
-
+                this.cancelModal.hide();
                 toast.fire({
 					icon: 'success',
 					title: 'Canceled Successfully'
@@ -292,6 +317,12 @@ export default {
         }
     },
     created(){
+        let dates = new Date();
+        let Year = dates.getFullYear();
+        let Month =("0" + (dates.getMonth() + 1)).slice(-2);
+        let Day = ("0" + (dates.getDate())).slice(-2);
+        this.cancelled_date = Year+'-'+Month+'-'+Day;
+
         this.loadRooms();
         this.loadStudents();
     }

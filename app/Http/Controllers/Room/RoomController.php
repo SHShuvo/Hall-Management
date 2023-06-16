@@ -69,12 +69,17 @@ class RoomController extends Controller
         ])->first();
         return response($room, 200);
     }
-    public function cancelAllocation($seat_id){
-        $seat = Seat::findOrFail($seat_id);
+    public function cancelAllocation(Request $request){
+        $request->validate(
+            [
+                'cancelled_seat_id' => 'required', 
+                'cancelled_date' => 'required',
+            ],
+        );
+        $seat = Seat::findOrFail($request->cancelled_seat_id);
 
         $student_details = StudentDetails::where('user_id', $seat->allocated_user)->first();
-        $today = \Carbon\Carbon::today();
-        $student_details->cancelled_date = $today;
+        $student_details->cancelled_date = $request->cancelled_date;
         $student_details->save();
 
         $seat->allocated_user = null;

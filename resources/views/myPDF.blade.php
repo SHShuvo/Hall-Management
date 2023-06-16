@@ -65,7 +65,10 @@
             Department: <span>{{$student->studentDetails->departmentDetail->name}}</span>, 
             Phone: <span>{{$student->phone}}</span>, 
             @if($student->studentDetails->allocated_date)         
-                Hall Attached date: <span>{{date_format(new DateTime($student->studentDetails->allocated_date),"d/m/Y")}}</span> 
+                Hall Attached date: <span>{{date_format(new DateTime($student->studentDetails->allocated_date),"d/m/Y")}}</span>,
+                @if($student->studentDetails->cancelled_date)
+                Room cancel date: <span>{{date_format(new DateTime($student->studentDetails->cancelled_date),"d/m/Y")}}</span> 
+                @endif
                 has total <span style="font-weight:bold;">charge (Tk.): {{$student->studentDetails->charge}}</span> 
                 and total <span style="font-weight:bold;">paid (Tk.): {{$student->payments_sum_amount}}</span>. 
                 Our Observation of record shown that 

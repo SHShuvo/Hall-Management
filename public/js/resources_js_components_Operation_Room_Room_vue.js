@@ -153,12 +153,38 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       myModal: {},
       alModal: {},
+      cancelModal: {},
       roomForm: {
         room_number: null,
         number_of_seats: null
@@ -171,6 +197,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         allocated_date: null
       },
       search: '',
+      cancelled_date: null,
+      cancelled_name: null,
+      cancelled_seat_id: null,
       rooms: [],
       students: [],
       errors: []
@@ -187,24 +216,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   methods: {
     cancelAllocation: function cancelAllocation(st) {
-      var _this = this;
-
-      Swal.fire({
-        title: 'Do you want to cancel allocation of ' + st.student.name + ' ?',
-        text: "You won't be able to revert this!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, cancel it!'
-      }).then(function (result) {
-        if (result.value) {
-          _this.executeCancel(st.id);
-        }
-      });
+      this.cancelled_seat_id = st.id;
+      this.cancelled_name = st.student.name;
+      this.cancelModal = new bootstrap__WEBPACK_IMPORTED_MODULE_1__.Modal(document.getElementById('cancelModal'));
+      this.cancelModal.show();
     },
-    executeCancel: function executeCancel(seat_id) {
-      var _this2 = this;
+    executeCancel: function executeCancel() {
+      var _this = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
         var _yield$axios$get, data, index;
@@ -215,38 +233,45 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 0:
                 _context.prev = 0;
                 _context.next = 3;
-                return axios.get("/cancel-seat/".concat(seat_id));
+                return axios.get("/cancel-seat", {
+                  params: {
+                    cancelled_seat_id: _this.cancelled_seat_id,
+                    cancelled_date: _this.cancelled_date
+                  }
+                });
 
               case 3:
                 _yield$axios$get = _context.sent;
                 data = _yield$axios$get.data;
-                index = _this2.rooms.findIndex(function (el) {
+                index = _this.rooms.findIndex(function (el) {
                   return el.id == data.id;
                 });
 
-                _this2.rooms.splice(index, 1, data);
+                _this.rooms.splice(index, 1, data);
+
+                _this.cancelModal.hide();
 
                 toast.fire({
                   icon: 'success',
                   title: 'Canceled Successfully'
                 });
-                _context.next = 13;
+                _context.next = 14;
                 break;
 
-              case 10:
-                _context.prev = 10;
+              case 11:
+                _context.prev = 11;
                 _context.t0 = _context["catch"](0);
                 toast.fire({
                   icon: 'error',
                   title: 'Try again'
                 });
 
-              case 13:
+              case 14:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[0, 10]]);
+        }, _callee, null, [[0, 11]]);
       }))();
     },
     allocateEdit: function allocateEdit(room, seat) {
@@ -259,7 +284,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.alModal.show();
     },
     updateAllocation: function updateAllocation() {
-      var _this3 = this;
+      var _this2 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
         var _yield$axios$post, data, index, _error$response, _error$response2, _error$response3, _error$response3$data, error_msg;
@@ -268,23 +293,23 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                _this3.errors = [];
+                _this2.errors = [];
                 _context2.prev = 1;
                 _context2.next = 4;
-                return axios.post('/update-allocation', _this3.allocationForm);
+                return axios.post('/update-allocation', _this2.allocationForm);
 
               case 4:
                 _yield$axios$post = _context2.sent;
                 data = _yield$axios$post.data;
-                index = _this3.rooms.findIndex(function (el) {
+                index = _this2.rooms.findIndex(function (el) {
                   return el.id == data.id;
                 });
 
-                _this3.rooms.splice(index, 1, data);
+                _this2.rooms.splice(index, 1, data);
 
-                _this3.alModal.hide();
+                _this2.alModal.hide();
 
-                _this3.allocationForm = {
+                _this2.allocationForm = {
                   room_number: null,
                   seat_number: null,
                   seat_id: null,
@@ -303,7 +328,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _context2.t0 = _context2["catch"](1);
 
                 if (((_error$response = _context2.t0.response) === null || _error$response === void 0 ? void 0 : _error$response.status) == 422) {
-                  _this3.errors = _context2.t0.response.data.errors;
+                  _this2.errors = _context2.t0.response.data.errors;
                 }
 
                 if (!(((_error$response2 = _context2.t0.response) === null || _error$response2 === void 0 ? void 0 : _error$response2.status) == 403)) {
@@ -337,7 +362,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.myModal.show();
     },
     saveRoom: function saveRoom() {
-      var _this4 = this;
+      var _this3 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
         var _yield$axios$post2, data;
@@ -346,18 +371,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                _this4.errors = [];
+                _this3.errors = [];
                 _context3.prev = 1;
                 _context3.next = 4;
-                return axios.post('/register-room', _this4.roomForm);
+                return axios.post('/register-room', _this3.roomForm);
 
               case 4:
                 _yield$axios$post2 = _context3.sent;
                 data = _yield$axios$post2.data;
 
-                _this4.myModal.hide();
+                _this3.myModal.hide();
 
-                _this4.roomForm = {
+                _this3.roomForm = {
                   room_number: null,
                   number_of_seats: null
                 };
@@ -373,7 +398,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _context3.t0 = _context3["catch"](1);
 
                 if (_context3.t0.response.status == 422) {
-                  _this4.errors = _context3.t0.response.data.errors;
+                  _this3.errors = _context3.t0.response.data.errors;
                 }
 
                 toast.fire({
@@ -390,7 +415,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }))();
     },
     loadRooms: function loadRooms() {
-      var _this5 = this;
+      var _this4 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
         var _yield$axios$get2, data;
@@ -406,7 +431,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 3:
                 _yield$axios$get2 = _context4.sent;
                 data = _yield$axios$get2.data;
-                _this5.rooms = data;
+                _this4.rooms = data;
                 _context4.next = 10;
                 break;
 
@@ -423,7 +448,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }))();
     },
     loadStudents: function loadStudents() {
-      var _this6 = this;
+      var _this5 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee5() {
         var _yield$axios$get3, data;
@@ -438,7 +463,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 2:
                 _yield$axios$get3 = _context5.sent;
                 data = _yield$axios$get3.data;
-                _this6.students = data;
+                _this5.students = data;
 
               case 5:
               case "end":
@@ -451,6 +476,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     allocateModal: function allocateModal() {}
   },
   created: function created() {
+    var dates = new Date();
+    var Year = dates.getFullYear();
+    var Month = ("0" + (dates.getMonth() + 1)).slice(-2);
+    var Day = ("0" + dates.getDate()).slice(-2);
+    this.cancelled_date = Year + '-' + Month + '-' + Day;
     this.loadRooms();
     this.loadStudents();
   }
@@ -1416,6 +1446,77 @@ var render = function () {
         ]),
       ]
     ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: { id: "cancelModal", tabindex: "-1" },
+      },
+      [
+        _c("div", { staticClass: "modal-dialog" }, [
+          _c("div", { staticClass: "modal-content" }, [
+            _vm._m(6),
+            _vm._v(" "),
+            _c("div", { staticClass: "modal-body" }, [
+              _c("div", { staticClass: "mt-3" }, [
+                _c("h5", [
+                  _vm._v(
+                    "Do you want to cancel allocation of " +
+                      _vm._s(_vm.cancelled_name) +
+                      " ?"
+                  ),
+                ]),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "row mt-3" }, [
+                _c("div", { staticClass: "col-md-12" }, [
+                  _c("label", [_vm._v("Date of cancelation")]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.cancelled_date,
+                        expression: "cancelled_date",
+                      },
+                    ],
+                    staticClass: "form-control form-control-sm",
+                    attrs: { type: "text", onfocus: "(this.type='date')" },
+                    domProps: { value: _vm.cancelled_date },
+                    on: {
+                      input: function ($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.cancelled_date = $event.target.value
+                      },
+                    },
+                  }),
+                ]),
+              ]),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-sm w-100 btn-primary mt-3",
+                  on: {
+                    click: function ($event) {
+                      $event.preventDefault()
+                      return _vm.executeCancel.apply(null, arguments)
+                    },
+                  },
+                },
+                [_vm._v("Cancel Allocation")]
+              ),
+            ]),
+            _vm._v(" "),
+            _vm._m(7),
+          ]),
+        ]),
+      ]
+    ),
   ])
 }
 var staticRenderFns = [
@@ -1491,6 +1592,38 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "modal-header" }, [
       _c("h5", { staticClass: "modal-title" }, [_vm._v("Allocate Seat")]),
+      _vm._v(" "),
+      _c("button", {
+        staticClass: "btn-close",
+        attrs: {
+          type: "button",
+          "data-bs-dismiss": "modal",
+          "aria-label": "Close",
+        },
+      }),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-sm btn-secondary",
+          attrs: { type: "button", "data-bs-dismiss": "modal" },
+        },
+        [_vm._v("Close")]
+      ),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c("h5", { staticClass: "modal-title" }, [_vm._v("Cancel Seat")]),
       _vm._v(" "),
       _c("button", {
         staticClass: "btn-close",

@@ -38,7 +38,7 @@ Route::get('/get-rooms', [RoomController::class, 'index']);
 
 //seat
 Route::post('/update-allocation', [RoomController::class, 'updateAllocation']);
-Route::get('/cancel-seat/{seat_id}', [RoomController::class, 'cancelAllocation']);
+Route::get('/cancel-seat', [RoomController::class, 'cancelAllocation']);
 Route::get('/get-seat-info', [RoomController::class, 'seatInfo']);
 
 //Department
