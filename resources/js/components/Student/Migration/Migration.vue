@@ -4,7 +4,7 @@
             <h5 class="text-danger fw-bold">Migration</h5>
         </div>
         <div v-if="!loading" class="mt-4">
-            <div v-if="isEligible">
+            <div v-if="isEligible || isCanceled">
                 <div class="card p-4">
                     <div class="row">
                         <div class="col-md-4">
@@ -17,15 +17,18 @@
                         </div>
                         <div class="col-md-4">
                             <div>
-                                <span class="fw-bold">Present Room No:</span> {{allocationInfo.seat.room.room_number}}
+                                <span class="fw-bold">Present Room No:</span> {{allocationInfo.room_number}}
                             </div>
                             <div>
-                                <span class="fw-bold">Present Seat No:</span> {{allocationInfo.seat.seat_number}}
+                                <span class="fw-bold">Present Seat No:</span> {{allocationInfo.seat_number}}
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div>
                                 <span class="fw-bold">Allocated Date:</span> {{allocationInfo.student_details.allocated_date}}
+                            </div>
+                            <div>
+                                <span class="fw-bold">Canceled Date:</span> {{allocationInfo.student_details.cancelled_date}}
                             </div>
                         </div>
                     </div>
@@ -38,7 +41,7 @@
             </div>
         </div>
         <hr class="mt-5">
-        <div>
+        <div v-if="isEligible">
             <div class="row p-3">
                 <div class="col-md-3">
                     <label>Select Available Room</label>
@@ -81,7 +84,10 @@ export default {
     },
     computed:{
         isEligible(){
-            return this.allocationInfo.student_details && !(this.allocationInfo.student_details.cancelled_date);
+            return !!(this.allocationInfo.student_details && this.allocationInfo.student_details.allocated_date && !(this.allocationInfo.student_details.cancelled_date));
+        },
+        isCanceled(){
+            return !!(this.allocationInfo.student_details && this.allocationInfo.student_details.allocated_date && this.allocationInfo.student_details.cancelled_date);
         },
         availableSeats(){
             if(this.migrationForm.room){
@@ -114,6 +120,8 @@ export default {
             try {
                 const {data} = await axios.get('/migration-info');
                 this.allocationInfo = data;
+                this.allocationInfo.room_number = data.seat?.room?.room_number;
+                this.allocationInfo.seat_number = data.seat?.seat_number;
             } 
             catch (error) {
                 

@@ -65,6 +65,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['login_status'],
   data: function data() {
@@ -282,12 +284,6 @@ var render = function () {
       { staticClass: "navbar navbar-expand-lg navbar-light bg-light" },
       [
         _c("div", { staticClass: "container-fluid" }, [
-          _c("a", { staticClass: "navbar-brand", attrs: { href: "#" } }, [
-            _vm._v("Hall Management"),
-          ]),
-          _vm._v(" "),
-          _vm._m(0),
-          _vm._v(" "),
           _c(
             "div",
             {
@@ -295,7 +291,7 @@ var render = function () {
               attrs: { id: "navbarNav" },
             },
             [
-              _vm._m(1),
+              _vm._m(0),
               _vm._v(" "),
               _c("ul", { staticClass: "navbar-nav justify-content-between" }, [
                 _vm.login_status
@@ -351,6 +347,10 @@ var render = function () {
               ]),
             ]
           ),
+          _vm._v(" "),
+          _vm._m(1),
+          _vm._v(" "),
+          _vm._m(2),
         ]),
       ]
     ),
@@ -447,6 +447,41 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c("ul", { staticClass: "navbar-nav" }, [
+      _c("li", { staticClass: "nav-item" }, [
+        _c(
+          "a",
+          {
+            staticClass: "navbar-brand",
+            attrs: { "aria-current": "page", href: "#" },
+          },
+          [_vm._v("Bangabandhu Sheikh Mujibur Rahman Hall")]
+        ),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "a",
+      {
+        staticClass: "navbar-brand",
+        attrs: { target: "_blank", href: "https://www.pust.ac.bd/" },
+      },
+      [
+        _c("img", {
+          staticStyle: { width: "70px" },
+          attrs: { src: "/img/logo.png", alt: "" },
+        }),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c(
       "button",
       {
@@ -462,23 +497,6 @@ var staticRenderFns = [
       },
       [_c("span", { staticClass: "navbar-toggler-icon" })]
     )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("ul", { staticClass: "navbar-nav" }, [
-      _c("li", { staticClass: "nav-item" }, [
-        _c(
-          "a",
-          {
-            staticClass: "nav-link active",
-            attrs: { "aria-current": "page", href: "#" },
-          },
-          [_vm._v("Home")]
-        ),
-      ]),
-    ])
   },
 ]
 render._withStripped = true

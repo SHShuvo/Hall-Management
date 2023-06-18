@@ -86,6 +86,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -101,7 +104,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   computed: {
     isEligible: function isEligible() {
-      return this.allocationInfo.student_details && !this.allocationInfo.student_details.cancelled_date;
+      return !!(this.allocationInfo.student_details && this.allocationInfo.student_details.allocated_date && !this.allocationInfo.student_details.cancelled_date);
+    },
+    isCanceled: function isCanceled() {
+      return !!(this.allocationInfo.student_details && this.allocationInfo.student_details.allocated_date && this.allocationInfo.student_details.cancelled_date);
     },
     availableSeats: function availableSeats() {
       if (this.migrationForm.room) {
@@ -148,7 +154,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this2 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
-        var _yield$axios$get, data;
+        var _data$seat, _data$seat$room, _data$seat2, _yield$axios$get, data;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
           while (1) {
@@ -163,24 +169,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _yield$axios$get = _context2.sent;
                 data = _yield$axios$get.data;
                 _this2.allocationInfo = data;
-                _context2.next = 11;
+                _this2.allocationInfo.room_number = (_data$seat = data.seat) === null || _data$seat === void 0 ? void 0 : (_data$seat$room = _data$seat.room) === null || _data$seat$room === void 0 ? void 0 : _data$seat$room.room_number;
+                _this2.allocationInfo.seat_number = (_data$seat2 = data.seat) === null || _data$seat2 === void 0 ? void 0 : _data$seat2.seat_number;
+                _context2.next = 13;
                 break;
-
-              case 9:
-                _context2.prev = 9;
-                _context2.t0 = _context2["catch"](1);
 
               case 11:
                 _context2.prev = 11;
-                _this2.loading = false;
-                return _context2.finish(11);
+                _context2.t0 = _context2["catch"](1);
 
-              case 14:
+              case 13:
+                _context2.prev = 13;
+                _this2.loading = false;
+                return _context2.finish(13);
+
+              case 16:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, null, [[1, 9, 11, 14]]);
+        }, _callee2, null, [[1, 11, 13, 16]]);
       }))();
     },
     loadAvailableSeats: function loadAvailableSeats() {
@@ -738,7 +746,7 @@ var render = function () {
     _vm._v(" "),
     !_vm.loading
       ? _c("div", { staticClass: "mt-4" }, [
-          _vm.isEligible
+          _vm.isEligible || _vm.isCanceled
             ? _c("div", [
                 _c("div", { staticClass: "card p-4" }, [
                   _c("div", { staticClass: "row" }, [
@@ -773,7 +781,7 @@ var render = function () {
                         ]),
                         _vm._v(
                           " " +
-                            _vm._s(_vm.allocationInfo.seat.room.room_number) +
+                            _vm._s(_vm.allocationInfo.room_number) +
                             "\n                        "
                         ),
                       ]),
@@ -784,7 +792,7 @@ var render = function () {
                         ]),
                         _vm._v(
                           " " +
-                            _vm._s(_vm.allocationInfo.seat.seat_number) +
+                            _vm._s(_vm.allocationInfo.seat_number) +
                             "\n                        "
                         ),
                       ]),
@@ -799,6 +807,19 @@ var render = function () {
                           " " +
                             _vm._s(
                               _vm.allocationInfo.student_details.allocated_date
+                            ) +
+                            "\n                        "
+                        ),
+                      ]),
+                      _vm._v(" "),
+                      _c("div", [
+                        _c("span", { staticClass: "fw-bold" }, [
+                          _vm._v("Canceled Date:"),
+                        ]),
+                        _vm._v(
+                          " " +
+                            _vm._s(
+                              _vm.allocationInfo.student_details.cancelled_date
                             ) +
                             "\n                        "
                         ),
@@ -819,101 +840,103 @@ var render = function () {
     _vm._v(" "),
     _c("hr", { staticClass: "mt-5" }),
     _vm._v(" "),
-    _c("div", [
-      _c("div", { staticClass: "row p-3" }, [
-        _c(
-          "div",
-          { staticClass: "col-md-3" },
-          [
-            _c("label", [_vm._v("Select Available Room")]),
+    _vm.isEligible
+      ? _c("div", [
+          _c("div", { staticClass: "row p-3" }, [
+            _c(
+              "div",
+              { staticClass: "col-md-3" },
+              [
+                _c("label", [_vm._v("Select Available Room")]),
+                _vm._v(" "),
+                _c("v-select", {
+                  staticClass: "v-select-sm",
+                  attrs: {
+                    selectOnTab: true,
+                    clearable: true,
+                    options: _vm.availableRooms,
+                    placeholder: "Select room",
+                    label: "room_number",
+                  },
+                  model: {
+                    value: _vm.migrationForm.room,
+                    callback: function ($$v) {
+                      _vm.$set(_vm.migrationForm, "room", $$v)
+                    },
+                    expression: "migrationForm.room",
+                  },
+                }),
+              ],
+              1
+            ),
             _vm._v(" "),
-            _c("v-select", {
-              staticClass: "v-select-sm",
-              attrs: {
-                selectOnTab: true,
-                clearable: true,
-                options: _vm.availableRooms,
-                placeholder: "Select room",
-                label: "room_number",
-              },
-              model: {
-                value: _vm.migrationForm.room,
-                callback: function ($$v) {
-                  _vm.$set(_vm.migrationForm, "room", $$v)
-                },
-                expression: "migrationForm.room",
-              },
-            }),
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "col-md-3" },
-          [
-            _c("label", [_vm._v("Select Available Seat")]),
+            _c(
+              "div",
+              { staticClass: "col-md-3" },
+              [
+                _c("label", [_vm._v("Select Available Seat")]),
+                _vm._v(" "),
+                _c("v-select", {
+                  staticClass: "v-select-sm",
+                  attrs: {
+                    selectOnTab: true,
+                    clearable: true,
+                    options: _vm.availableSeats,
+                    placeholder: "Select seat",
+                    label: "seat_number",
+                  },
+                  model: {
+                    value: _vm.migrationForm.seat,
+                    callback: function ($$v) {
+                      _vm.$set(_vm.migrationForm, "seat", $$v)
+                    },
+                    expression: "migrationForm.seat",
+                  },
+                }),
+              ],
+              1
+            ),
             _vm._v(" "),
-            _c("v-select", {
-              staticClass: "v-select-sm",
-              attrs: {
-                selectOnTab: true,
-                clearable: true,
-                options: _vm.availableSeats,
-                placeholder: "Select seat",
-                label: "seat_number",
-              },
-              model: {
-                value: _vm.migrationForm.seat,
-                callback: function ($$v) {
-                  _vm.$set(_vm.migrationForm, "seat", $$v)
+            _c("div", { staticClass: "col-md-3" }, [
+              _c("label", [_vm._v("Select Date")]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.migrationForm.date,
+                    expression: "migrationForm.date",
+                  },
+                ],
+                staticClass: "form-control form-control-sm",
+                attrs: { type: "date" },
+                domProps: { value: _vm.migrationForm.date },
+                on: {
+                  input: function ($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.migrationForm, "date", $event.target.value)
+                  },
                 },
-                expression: "migrationForm.seat",
-              },
-            }),
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-md-3" }, [
-          _c("label", [_vm._v("Select Date")]),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.migrationForm.date,
-                expression: "migrationForm.date",
-              },
-            ],
-            staticClass: "form-control form-control-sm",
-            attrs: { type: "date" },
-            domProps: { value: _vm.migrationForm.date },
-            on: {
-              input: function ($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.migrationForm, "date", $event.target.value)
-              },
-            },
-          }),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-md-3" }, [
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-sm btn-primary px-3",
-              staticStyle: { "margin-top": "22px" },
-              on: { click: _vm.executeMigration },
-            },
-            [_vm._v("Migrate")]
-          ),
-        ]),
-      ]),
-    ]),
+              }),
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-md-3" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-sm btn-primary px-3",
+                  staticStyle: { "margin-top": "22px" },
+                  on: { click: _vm.executeMigration },
+                },
+                [_vm._v("Migrate")]
+              ),
+            ]),
+          ]),
+        ])
+      : _vm._e(),
   ])
 }
 var staticRenderFns = [

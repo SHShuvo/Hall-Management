@@ -57,7 +57,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         name: 'add_student'
       }, {
         title: 'Rooms',
-        name: 'add_room'
+        name: 'add_room_provost'
+      }, {
+        title: 'Payments',
+        name: 'payments_provost'
       }]
     };
   },

@@ -28,6 +28,16 @@ const routes = [
                 component: () => import("./components/User/Admins/Admins"),
                 name: "add_admin",
             },
+            {
+                path:'room', 
+                component: () => import("./components/Operation/Room/Room"),
+                name: "add_room_provost",
+            },
+            {   
+                path:'payment', 
+                component: () => import("./components/Operation/Payments/Payments"),
+                name: "payments_provost",
+            }
         ],
         beforeEnter: (to, from, next) => {
             let user_role = localStorage.getItem('user_role');

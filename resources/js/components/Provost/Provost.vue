@@ -30,7 +30,8 @@ export default {
                 { title:'Dashboard', name:'provost_dashboard'},
                 { title:'Admins', name:'add_admin'},
                 { title:'Students', name:'add_student'},
-                { title:'Rooms', name:'add_room'},
+                { title:'Rooms', name:'add_room_provost'},
+                { title:'Payments', name:'payments_provost'},
             ],
         }
     },
