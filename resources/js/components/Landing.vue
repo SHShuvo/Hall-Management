@@ -8,7 +8,7 @@
 							<a class="navbar-brand" aria-current="page" href="#">Hall Management System</a>
 						</li>
 						<li class="nav-item">
-							<a class="navbar-brand" aria-current="page" href="#">BSMR Hall</a>
+							<a class="navbar-brand" aria-current="page" href="https://www.pust.ac.bd/facilities/residence/BSMRH">BSMR Hall</a>
 						</li>
 					</ul>
 					<ul class="navbar-nav justify-content-between">
