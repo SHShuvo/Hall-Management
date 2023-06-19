@@ -5,7 +5,10 @@
 				<div class="collapse navbar-collapse justify-content-between" id="navbarNav">
 					<ul class="navbar-nav">
 						<li class="nav-item">
-						<a class="navbar-brand" aria-current="page" href="#">Bangabandhu Sheikh Mujibur Rahman Hall</a>
+							<a class="navbar-brand" aria-current="page" href="#">Hall Management System</a>
+						</li>
+						<li class="nav-item">
+							<a class="navbar-brand" aria-current="page" href="#">BSMR Hall</a>
 						</li>
 					</ul>
 					<ul class="navbar-nav justify-content-between">
@@ -18,7 +21,7 @@
 					</ul>
 				</div>
 				<a class="navbar-brand"  target="_blank" href="https://www.pust.ac.bd/">
-					<img style="width: 70px;" src="/img/logo.png" alt="">
+					<img style="width: 45px;" src="/img/logo.png" alt="">
 				</a>
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
