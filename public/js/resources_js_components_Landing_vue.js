@@ -67,6 +67,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['login_status'],
   data: function data() {
@@ -455,7 +458,21 @@ var staticRenderFns = [
             staticClass: "navbar-brand",
             attrs: { "aria-current": "page", href: "#" },
           },
-          [_vm._v("Bangabandhu Sheikh Mujibur Rahman Hall")]
+          [_vm._v("Hall Management System")]
+        ),
+      ]),
+      _vm._v(" "),
+      _c("li", { staticClass: "nav-item" }, [
+        _c(
+          "a",
+          {
+            staticClass: "navbar-brand",
+            attrs: {
+              "aria-current": "page",
+              href: "https://www.pust.ac.bd/facilities/residence/BSMRH",
+            },
+          },
+          [_vm._v("BSMR Hall")]
         ),
       ]),
     ])
@@ -472,7 +489,7 @@ var staticRenderFns = [
       },
       [
         _c("img", {
-          staticStyle: { width: "70px" },
+          staticStyle: { width: "45px" },
           attrs: { src: "/img/logo.png", alt: "" },
         }),
       ]

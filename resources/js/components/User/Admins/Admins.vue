@@ -35,18 +35,22 @@
             <div class="modal-body">
                 <div class="row justify-content-center">
                     <div class="col-md-12">
-                        <form>
+                        <form autocomplete="off">
                             <div class="form-group">
                                 <label>Name</label>
                                 <input type="text" v-model="adminForm.name" placeholder="Name" class="form-control form-control-sm" required>
                             </div>
                             <div class="form-group mt-3">
+                                <label for="phone">Phone</label>
+                                <input type="phone" v-model="adminForm.phone" class="form-control form-control-sm" placeholder="Phone" required>
+                            </div>
+                            <div class="form-group mt-3">
                                 <label for="email">Email</label>
-                                <input type="email" v-model="adminForm.email" class="form-control form-control-sm" required>
+                                <input type="email" autocomplete="off" v-model="adminForm.email" class="form-control form-control-sm" placeholder="Email" required>
                             </div>
                             <div class="form-group mt-3">
                                 <label for="password">Password</label>
-                                <input type="password" v-model="adminForm.password" class="form-control form-control-sm" id="password" placeholder="Password" required>
+                                <input type="password" autocomplete="off" v-model="adminForm.password" class="form-control form-control-sm" placeholder="Password" required>
                             </div>
                             <button @click.prevent="registerAdmin" class="btn btn-sm w-100 btn-primary mt-3">Register</button>
                         </form>
@@ -71,6 +75,7 @@ export default {
                 name:'',
                 email:'',
                 password:'',
+                phone:'',
             },
             admins:[],
         }
@@ -84,6 +89,12 @@ export default {
             try {
                 const {data} = await axios.post('/register-admin',this.adminForm);
                 this.loadAdmins();
+                this.adminForm = {
+                    name:'',
+                    email:'',
+                    password:'',
+                    phone:'',
+                };
     		    this.myModal.hide();
 				toast.fire({
 					icon: 'success',

@@ -83,6 +83,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -91,7 +95,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       adminForm: {
         name: '',
         email: '',
-        password: ''
+        password: '',
+        phone: ''
       },
       admins: []
     };
@@ -121,29 +126,36 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 _this.loadAdmins();
 
+                _this.adminForm = {
+                  name: '',
+                  email: '',
+                  password: '',
+                  phone: ''
+                };
+
                 _this.myModal.hide();
 
                 toast.fire({
                   icon: 'success',
                   title: 'Successfully Registered'
                 });
-                _context.next = 13;
+                _context.next = 14;
                 break;
 
-              case 10:
-                _context.prev = 10;
+              case 11:
+                _context.prev = 11;
                 _context.t0 = _context["catch"](0);
                 toast.fire({
                   icon: 'error',
                   title: 'Try again'
                 });
 
-              case 13:
+              case 14:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[0, 10]]);
+        }, _callee, null, [[0, 11]]);
       }))();
     },
     loadAdmins: function loadAdmins() {
@@ -316,7 +328,7 @@ var render = function () {
             _c("div", { staticClass: "modal-body" }, [
               _c("div", { staticClass: "row justify-content-center" }, [
                 _c("div", { staticClass: "col-md-12" }, [
-                  _c("form", [
+                  _c("form", { attrs: { autocomplete: "off" } }, [
                     _c("div", { staticClass: "form-group" }, [
                       _c("label", [_vm._v("Name")]),
                       _vm._v(" "),
@@ -348,6 +360,42 @@ var render = function () {
                     ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "form-group mt-3" }, [
+                      _c("label", { attrs: { for: "phone" } }, [
+                        _vm._v("Phone"),
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.adminForm.phone,
+                            expression: "adminForm.phone",
+                          },
+                        ],
+                        staticClass: "form-control form-control-sm",
+                        attrs: {
+                          type: "phone",
+                          placeholder: "Phone",
+                          required: "",
+                        },
+                        domProps: { value: _vm.adminForm.phone },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.adminForm,
+                              "phone",
+                              $event.target.value
+                            )
+                          },
+                        },
+                      }),
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group mt-3" }, [
                       _c("label", { attrs: { for: "email" } }, [
                         _vm._v("Email"),
                       ]),
@@ -362,7 +410,12 @@ var render = function () {
                           },
                         ],
                         staticClass: "form-control form-control-sm",
-                        attrs: { type: "email", required: "" },
+                        attrs: {
+                          type: "email",
+                          autocomplete: "off",
+                          placeholder: "Email",
+                          required: "",
+                        },
                         domProps: { value: _vm.adminForm.email },
                         on: {
                           input: function ($event) {
@@ -396,7 +449,7 @@ var render = function () {
                         staticClass: "form-control form-control-sm",
                         attrs: {
                           type: "password",
-                          id: "password",
+                          autocomplete: "off",
                           placeholder: "Password",
                           required: "",
                         },
